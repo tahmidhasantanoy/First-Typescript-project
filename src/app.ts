@@ -5,7 +5,7 @@ const app: Express = express();
 // const port = 3000;
 
 //parser
-app.use(express.json());
+app.use(express.json());  //for reading json() data 
 app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
