@@ -1,10 +1,5 @@
-import { Schema, model, /* connect */ } from 'mongoose';
-import {
-  Guardian,
-  LocalGuardian,
-  Name,
-  Student,
-} from './student.interface';
+import { Schema, model /* connect */ } from 'mongoose';
+import { Guardian, LocalGuardian, Name, Student } from './student.interface';
 
 // Create a Schema corres
 
@@ -61,4 +56,4 @@ const studentSchema = new Schema<Student>({
 });
 
 // create a model
-export const StudentModal = model<Student>('Student', studentSchema);  // may be here 
+export const StudentModel = model<Student>('Student', studentSchema); // may be here

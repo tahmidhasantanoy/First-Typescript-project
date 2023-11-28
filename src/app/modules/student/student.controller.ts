@@ -3,10 +3,7 @@ import { studentServices } from './student.sevice';
 
 // Controller just work with req & res
 const createStudent = async (req: Request, res: Response) => {
-  // console.log(req.body);
   try {
-    // console.log(req.body);
-
     const student = req.body.student; //get data
 
     // will call to service
@@ -25,9 +22,10 @@ const createStudent = async (req: Request, res: Response) => {
 };
 
 const getAllStudent = async (req: Request, res: Response) => {
-
   try {
-    const getStudentResultFromDB = await studentServices.getAllData();
+
+    const getStudentResultFromDB =
+      await studentServices.getAllData();
 
     res.status(200).json({
       success: true,
@@ -39,7 +37,24 @@ const getAllStudent = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleStudent = async (req: Request, res: Response) => {
+  try {
+
+    const {studentId} = req.params //des
+    const singleStudentResultFromDB = await studentServices.getSingleStudent(studentId);
+
+    res.status(200).json({
+      success: true,
+      message: 'One student data is found',
+      data: singleStudentResultFromDB,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const studentController = {
   createStudent,
   getAllStudent,
+  getSingleStudent,
 };

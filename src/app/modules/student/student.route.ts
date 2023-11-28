@@ -10,4 +10,7 @@ router.post('/create-student', studentController.createStudent);
 
 router.get("/",studentController.getAllStudent)
 
+//single student data with query params
+router.get("/:studentId",studentController.getSingleStudent)  //video dekha start korte hbe ...
+
 export const studentRoutes = router; 

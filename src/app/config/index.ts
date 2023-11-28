@@ -5,7 +5,7 @@ import path from 'path';
 dotenv.config({ path: path.join(process.cwd(), '.env') }); //define the .env file || But why??\
 
 
-console.log(process.env.PORT); //ok
+
 
 export default {
   port: process.env.PORT,
