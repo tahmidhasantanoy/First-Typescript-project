@@ -1,17 +1,20 @@
-import express, { Express } from 'express';
-import { Request, Response } from 'express';
+import express, { Express,/*  Request, Response */ } from 'express';
 import cors from 'cors';
+import { studentRoutes } from './app/modules/student/student.route';
 const app: Express = express();
-// const port = 3000;
 
 //parser
 app.use(express.json());  //for reading json() data 
 app.use(cors());
 
-app.get('/', (req: Request, res: Response) => {
-  const a = 10;
-  res.send(a);
-});
+
+// application port 
+app.use("/api/v1/students",studentRoutes)
+
+// app.get('/', (req: Request, res: Response) => {
+//   const a = 10;
+//   res.send(a);
+// });
 
 // app.listen(port, () => {
 //   console.log("Project 2  running successfully");

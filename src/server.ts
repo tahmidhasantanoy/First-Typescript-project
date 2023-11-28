@@ -2,13 +2,15 @@
 import app from './app';
 import config from './app/config';
 import mongoose from 'mongoose';
-// const port = 3000;
 
 // BeAMongooseMaster
 // GirDHvHYRI9NSchP
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
+
+
+    console.log(`config port is ${config.port}`);
 
     app.listen(config.port, () => {
       console.log(`Project two  running successfully on ${config.port}`);
