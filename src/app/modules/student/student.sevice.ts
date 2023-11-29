@@ -4,7 +4,7 @@ import { StudentModel } from './student.model';
 const createStudentIntoDB = async (student: Student) => {
   const result = await StudentModel.create(student); //insert student data
 
-  console.log(result); // why data not stored
+  // console.log(result); // why data not stored
   return result;
 };
 

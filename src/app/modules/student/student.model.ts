@@ -1,11 +1,35 @@
 import { Schema, model /* connect */ } from 'mongoose';
 import { Guardian, LocalGuardian, Name, Student } from './student.interface';
+import validator from 'validator';
 
 // Create a Schema corres
 
 const studentNameSchema = new Schema<Name>({
-  firstName: { type: String, required: true },
-  lastName: { type: String },
+  firstName: {
+    type: String,
+    required: true,
+    maxlength: [20, 'First name is not more than 20 characers'],
+    validate: function (data: string) {
+      // console.log(data);
+      const firstName =
+        data.charAt(0).toUpperCase() + data.slice(1).toLocaleLowerCase();
+      // console.log(firstName);
+      return data === firstName;
+    },
+  },
+  lastName: {
+    type: String,
+    validate: {
+      validator: (data: string) => validator.isAlpha(data),
+      message: 'Must be alpha',
+
+      // {
+      //   console.log(data);
+      //   console.log(validator.isAlpha(data));
+      // },
+      // message: 'Corret',
+    },
+  },
 });
 
 const studentGuardianSchema = new Schema<Guardian>({
@@ -38,11 +62,18 @@ const studentSchema = new Schema<Student>({
     type: String,
     enum: {
       values: ['Female', 'Male'],
-      message: 'Gender must be Male or Female.{VALUE} is not valid',
+      message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
     },
     required: true,
   }, //enum type
-  email: { type: String, required: true },
+  email: {
+    type: String,
+    validate: {
+      validator: (data: string) => validator.isEmail(data),
+      message: '{VALUE} is not email type ',
+    },
+    required: true,
+  },
   address: { type: String, required: true },
   contact: { type: String, required: true },
   bloodGroup: {

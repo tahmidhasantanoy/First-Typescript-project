@@ -17,6 +17,12 @@ const createStudent = async (req: Request, res: Response) => {
       data: serviceResult,
     });
   } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'student data is not found',
+      data: err,
+    });
+
     console.log(`catch err : ${err}`);
   }
 };
