@@ -26,14 +26,20 @@ const studentLocalGuardianSchema = new Schema<LocalGuardian>({
 
 const studentSchema = new Schema<Student>({
   id: { type: String },
-  name: studentNameSchema,
+  name: {
+    type: studentNameSchema,
+    required: [true, 'Please! Enter your name.'],
+  },
   //   name: {
   //     firstName: { type: String },
   //     lastName: { type: String },
   //   },
   gender: {
     type: String,
-    enum: ['Female', 'Male'],
+    enum: {
+      values: ['Female', 'Male'],
+      message: 'Gender must be Male or Female.{VALUE} is not valid',
+    },
     required: true,
   }, //enum type
   email: { type: String, required: true },
@@ -43,7 +49,10 @@ const studentSchema = new Schema<Student>({
     type: String,
     enum: ['A', 'AB', 'B', 'O'],
   },
-  guardian: studentGuardianSchema,
+  guardian: {
+    type: studentGuardianSchema,
+    required: true,
+  },
   //   guardian: {
   //     fatherName: { type: String },
   //     fatherOccupation: { type: String },
@@ -52,7 +61,10 @@ const studentSchema = new Schema<Student>({
   //     motherContact: { type: String },
   //     motherOccupation: { type: String },
   //   },
-  localGuardian: studentLocalGuardianSchema,
+  localGuardian: {
+    type: studentLocalGuardianSchema,
+    required: true,
+  },
   //   localGuardian: {
   //     name: { type: String },
   //     occupation: { type: String },
@@ -62,6 +74,7 @@ const studentSchema = new Schema<Student>({
   isActive: {
     type: String,
     enum: ['active', 'inActive'],
+    default: 'active',
   },
 });
 
