@@ -23,9 +23,7 @@ const createStudent = async (req: Request, res: Response) => {
 
 const getAllStudent = async (req: Request, res: Response) => {
   try {
-
-    const getStudentResultFromDB =
-      await studentServices.getAllData();
+    const getStudentResultFromDB = await studentServices.getAllData();
 
     res.status(200).json({
       success: true,
@@ -39,9 +37,9 @@ const getAllStudent = async (req: Request, res: Response) => {
 
 const getSingleStudent = async (req: Request, res: Response) => {
   try {
-
-    const {studentId} = req.params //des
-    const singleStudentResultFromDB = await studentServices.getSingleStudent(studentId);
+    const { studentId } = req.params; //des
+    const singleStudentResultFromDB =
+      await studentServices.getSingleStudent(studentId);
 
     res.status(200).json({
       success: true,

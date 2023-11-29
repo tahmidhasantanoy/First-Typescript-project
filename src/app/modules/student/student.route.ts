@@ -3,14 +3,14 @@ import { studentController } from './student.controller';
 
 //This router will provide all the method
 const router = express.Router();
-router.use(express.json())
+router.use(express.json());
 
 // route will call controller function
-router.post('/create-student', studentController.createStudent);  
+router.post('/create-student', studentController.createStudent);
 
-router.get("/",studentController.getAllStudent)
+router.get('/', studentController.getAllStudent);
 
 //single student data with query params
-router.get("/:studentId",studentController.getSingleStudent)  //video dekha start korte hbe ...
+router.get('/:studentId', studentController.getSingleStudent); //video dekha start korte hbe ...
 
-export const studentRoutes = router; 
+export const studentRoutes = router;

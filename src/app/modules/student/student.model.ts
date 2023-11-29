@@ -31,11 +31,18 @@ const studentSchema = new Schema<Student>({
   //     firstName: { type: String },
   //     lastName: { type: String },
   //   },
-  gender: ['Female', 'Male'], //enam type
+  gender: {
+    type: String,
+    enum: ['Female', 'Male'],
+    required: true,
+  }, //enum type
   email: { type: String, required: true },
   address: { type: String, required: true },
   contact: { type: String, required: true },
-  bloodGroup: ['A', 'AB', 'B', 'O'],
+  bloodGroup: {
+    type: String,
+    enum: ['A', 'AB', 'B', 'O'],
+  },
   guardian: studentGuardianSchema,
   //   guardian: {
   //     fatherName: { type: String },
@@ -52,7 +59,10 @@ const studentSchema = new Schema<Student>({
   //     address: { type: String, required: true },
   //     contact: { type: String, required: true },
   //   },
-  isActive: ['active', 'inActive'],
+  isActive: {
+    type: String,
+    enum: ['active', 'inActive'],
+  },
 });
 
 // create a model
