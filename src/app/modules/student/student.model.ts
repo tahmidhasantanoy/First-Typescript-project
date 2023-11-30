@@ -52,7 +52,7 @@ const studentSchema = new Schema<Student>({
   id: { type: String },
   name: {
     type: studentNameSchema,
-    required: [true, 'Please! Enter your name.'],
+    required: [true, 'Please! Enter your name.'], //extra message
   },
   //   name: {
   //     firstName: { type: String },
