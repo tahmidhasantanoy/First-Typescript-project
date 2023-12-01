@@ -1,5 +1,12 @@
 import { Schema, model /* connect */ } from 'mongoose';
-import { Guardian, LocalGuardian, Name, Student } from './student.interface';
+import {
+  Guardian,
+  LocalGuardian,
+  Name,
+  Student,
+  StudentMethods,
+  StudentModel,
+} from './student.interface';
 import validator from 'validator';
 
 // Create a Schema corres
@@ -37,7 +44,7 @@ const studentGuardianSchema = new Schema<Guardian>({
   fatherOccupation: { type: String },
   fatherContact: { type: String, required: true },
   motherName: { type: String, required: true },
-  moherOccupation: { type: String },
+  motherOccupation: { type: String },
   motherContact: { type: String, required: true },
 });
 

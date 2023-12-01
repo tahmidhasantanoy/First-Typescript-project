@@ -1,12 +1,14 @@
 // import { Schema, connection, model } from 'mongoose';
 
+import { Model } from 'mongoose';
+
 // Create an interface
 export type Guardian = {
   fatherName: string;
   fatherOccupation: string;
   fatherContact: string;
   motherName: string;
-  moherOccupation: string;
+  motherOccupation: string;
   motherContact: string;
 };
 
@@ -33,3 +35,14 @@ export type Student = {
   localGuardian: LocalGuardian;
   isActive: 'active' | 'inActive';
 };
+
+// custom instance method
+export type StudentMethods = {
+  isStudentExist(): Promise<Student>;
+};
+
+export type StudentModel = Model<
+  Student,
+  Record<string, never>,
+  StudentMethods
+>;

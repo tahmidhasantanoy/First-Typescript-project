@@ -1,27 +1,32 @@
 import { Request, Response } from 'express';
 import { studentServices } from './student.sevice';
-import studentValidationSchema from './student.validation';
+// import studentValidationSchema from './student.validation';
+// import { z } from 'zod';
+import StudentValidationSchema from './student.validation';
 
 // Controller just work with req & res
 const createStudent = async (req: Request, res: Response) => {
   try {
-   
-
     const student = req.body.student; //get data
 
-    const { error, /* value */ } = studentValidationSchema.validate(student);
+    /* joi validation */
+    // const { error, value } = StudentValidationSchema.validate(student)
     // console.log(error, value);
 
-    if (error) {
-      res.status(500).json({
-        success: false,
-        message: 'Error is occured',
-        error: error.details,
-      });
-    }
+    // if (error) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: 'Error is occured',
+    //     error: error.details,
+    //   });
+    // }
+
+    /* zod validation */
+    const zodParseData = StudentValidationSchema.parse(student);
 
     // will call to service
-    const serviceResult = await studentServices.createStudentIntoDB(student);
+    const serviceResult =
+      await studentServices.createStudentIntoDB(zodParseData); //send validate data
     // console.log(serviceResult); //don't find
 
     // sending response
@@ -40,6 +45,8 @@ const createStudent = async (req: Request, res: Response) => {
     console.log(`catch err : ${err}`);
   }
 };
+
+
 
 const getAllStudent = async (req: Request, res: Response) => {
   try {
