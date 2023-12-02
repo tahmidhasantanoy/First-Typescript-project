@@ -37,9 +37,7 @@ import { z } from 'zod';
 //   isActive: Joi.string().valid('active', 'inActive').default('active'),
 // });
 
-
-
- // validation uising zod schema
+// validation uising zod schema
 const NameSchema = z.object({
   firstName: z
     .string()
@@ -77,7 +75,7 @@ const LocalGuardianSchema = z.object({
 
 const StudentValidationSchema = z.object({
   id: z.string(),
-  password : z.string().max(20),
+  password: z.string().max(20),
   name: NameSchema,
   gender: z
     .enum(['Female', 'Male'])
@@ -91,6 +89,7 @@ const StudentValidationSchema = z.object({
   guardian: GuardianSchema,
   localGuardian: LocalGuardianSchema,
   isActive: z.enum(['active', 'inActive']).default('active'),
+  isDeleted: z.boolean().default(false),
 });
 
 export default StudentValidationSchema;

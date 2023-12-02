@@ -127,9 +127,14 @@ export const studentSchema = new Schema<
     enum: ['active', 'inActive'],
     default: 'active',
   },
+
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-// Mongoose middleware | hooks
+// Mongoose middleware pre | hooks
 studentSchema.pre('save', async function (next) {
   console.log(this, 'pre hook : work before save our data');
 
@@ -145,9 +150,29 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 
-// Mongoose middleware | hooks
-studentSchema.post('save', function () {
+// Mongoose middleware post | hooks
+studentSchema.post('save', function (doc, next) {
   console.log(this, 'post hook : work after save our data');
+  doc.password = ''; //Password field show empty
+  next();
+});
+
+// Mongoose middleware query | hooks
+studentSchema.pre('find', function (next) {
+  console.log(this);
+  this.find({ isDeleted: /* false */ { $ne: true } });
+  next();
+});
+
+studentSchema.pre('findOne', function (next) {
+  console.log(this);
+  this.find({ isDeleted: /* false */ { $ne: true } });
+  next();
+});
+
+studentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
 });
 
 // Schema for custom instance methods

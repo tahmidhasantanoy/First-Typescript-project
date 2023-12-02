@@ -13,4 +13,6 @@ router.get('/', studentController.getAllStudent);
 //single student data with query params
 router.get('/:studentId', studentController.getSingleStudent); //video dekha start korte hbe ...
 
+router.delete('/:studentId', studentController.deleteStudent);
+
 export const studentRoutes = router;

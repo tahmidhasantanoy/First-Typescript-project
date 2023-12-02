@@ -35,6 +35,7 @@ export type TStudent = {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   isActive: 'active' | 'inActive';
+  isDeleted: boolean;
 };
 
 // custom instance method
