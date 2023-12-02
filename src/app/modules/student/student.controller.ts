@@ -35,18 +35,16 @@ const createStudent = async (req: Request, res: Response) => {
       message: 'Student create successfully',
       data: serviceResult,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: "Can't create student data",
+      message: err.message || "Can't create student data",
       data: err,
     });
 
     console.log(`catch err : ${err}`);
   }
 };
-
-
 
 const getAllStudent = async (req: Request, res: Response) => {
   try {

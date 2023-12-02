@@ -1,9 +1,9 @@
 import { Schema, model /* connect */ } from 'mongoose';
 import {
-  Guardian,
-  LocalGuardian,
-  Name,
-  Student,
+  TGuardian,
+  TLocalGuardian,
+  TName,
+  TStudent,
   StudentMethods,
   StudentModel,
 } from './student.interface';
@@ -11,7 +11,7 @@ import validator from 'validator';
 
 // Create a Schema corres
 
-const studentNameSchema = new Schema<Name>({
+const studentNameSchema = new Schema<TName>({
   firstName: {
     type: String,
     required: true,
@@ -39,7 +39,7 @@ const studentNameSchema = new Schema<Name>({
   },
 });
 
-const studentGuardianSchema = new Schema<Guardian>({
+const studentGuardianSchema = new Schema<TGuardian>({
   fatherName: { type: String, required: true },
   fatherOccupation: { type: String },
   fatherContact: { type: String, required: true },
@@ -48,73 +48,80 @@ const studentGuardianSchema = new Schema<Guardian>({
   motherContact: { type: String, required: true },
 });
 
-const studentLocalGuardianSchema = new Schema<LocalGuardian>({
+const studentLocalGuardianSchema = new Schema<TLocalGuardian>({
   name: { type: String, required: true },
   occupation: { type: String },
   address: { type: String, required: true },
   contact: { type: String, required: true },
 });
 
-const studentSchema = new Schema<Student>({
-  id: { type: String },
-  name: {
-    type: studentNameSchema,
-    required: [true, 'Please! Enter your name.'], //extra message
-  },
-  //   name: {
-  //     firstName: { type: String },
-  //     lastName: { type: String },
-  //   },
-  gender: {
-    type: String,
-    enum: {
-      values: ['Female', 'Male'],
-      message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
+export const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
+  {
+    id: { type: String },
+    name: {
+      type: studentNameSchema,
+      required: [true, 'Please! Enter your name.'], //extra message
     },
-    required: true,
-  }, //enum type
-  email: {
-    type: String,
-    validate: {
-      validator: (data: string) => validator.isEmail(data),
-      message: '{VALUE} is not email type ',
+    //   name: {
+    //     firstName: { type: String },
+    //     lastName: { type: String },
+    //   },
+    gender: {
+      type: String,
+      enum: {
+        values: ['Female', 'Male'],
+        message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
+      },
+      required: true,
+    }, //enum type
+    email: {
+      type: String,
+      validate: {
+        validator: (data: string) => validator.isEmail(data),
+        message: '{VALUE} is not email type ',
+      },
+      required: true,
     },
-    required: true,
+    address: { type: String, required: true },
+    contact: { type: String, required: true },
+    bloodGroup: {
+      type: String,
+      enum: ['A', 'AB', 'B', 'O'],
+    },
+    guardian: {
+      type: studentGuardianSchema,
+      required: true,
+    },
+    //   guardian: {
+    //     fatherName: { type: String },
+    //     fatherOccupation: { type: String },
+    //     fatherContact: { type: String },
+    //     motherName: { type: String },
+    //     motherContact: { type: String },
+    //     motherOccupation: { type: String },
+    //   },
+    localGuardian: {
+      type: studentLocalGuardianSchema,
+      required: true,
+    },
+    //   localGuardian: {
+    //     name: { type: String },
+    //     occupation: { type: String },
+    //     address: { type: String, required: true },
+    //     contact: { type: String, required: true },
+    //   },
+    isActive: {
+      type: String,
+      enum: ['active', 'inActive'],
+      default: 'active',
+    },
   },
-  address: { type: String, required: true },
-  contact: { type: String, required: true },
-  bloodGroup: {
-    type: String,
-    enum: ['A', 'AB', 'B', 'O'],
-  },
-  guardian: {
-    type: studentGuardianSchema,
-    required: true,
-  },
-  //   guardian: {
-  //     fatherName: { type: String },
-  //     fatherOccupation: { type: String },
-  //     fatherContact: { type: String },
-  //     motherName: { type: String },
-  //     motherContact: { type: String },
-  //     motherOccupation: { type: String },
-  //   },
-  localGuardian: {
-    type: studentLocalGuardianSchema,
-    required: true,
-  },
-  //   localGuardian: {
-  //     name: { type: String },
-  //     occupation: { type: String },
-  //     address: { type: String, required: true },
-  //     contact: { type: String, required: true },
-  //   },
-  isActive: {
-    type: String,
-    enum: ['active', 'inActive'],
-    default: 'active',
-  },
-});
+);
+
+studentSchema.methods.isStudentExist = async function (id: string) {
+  const existingStudent = await Student.findOne({ id: id });
+  return existingStudent;
+};
 
 // create a model
-export const StudentModel = model<Student>('Student', studentSchema); // may be here
+export const Student = model<TStudent, StudentModel>('Student', studentSchema); // creating model based on Student interface

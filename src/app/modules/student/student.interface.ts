@@ -3,7 +3,7 @@
 import { Model } from 'mongoose';
 
 // Create an interface
-export type Guardian = {
+export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
   fatherContact: string;
@@ -12,37 +12,37 @@ export type Guardian = {
   motherContact: string;
 };
 
-export type Name = {
+export type TName = {
   firstName: string;
   lastName: string;
 };
-export type LocalGuardian = {
+export type TLocalGuardian = {
   name: string;
   occupation: string;
   address: string;
   contact: string;
 };
 
-export type Student = {
+export type TStudent = {
   id: string;
-  name: Name;
+  name: TName;
   gender: 'Male' | 'Female'; //type literal
   email: string;
   address: string;
   contact: string;
   bloodGroup?: 'A' | 'B' | 'AB' | 'O';
-  guardian: Guardian;
-  localGuardian: LocalGuardian;
+  guardian: TGuardian;
+  localGuardian: TLocalGuardian;
   isActive: 'active' | 'inActive';
 };
 
 // custom instance method
 export type StudentMethods = {
-  isStudentExist(): Promise<Student>;
+  isStudentExist(id: string): Promise<TStudent | null>;
 };
 
 export type StudentModel = Model<
-  Student,
+  TStudent,
   Record<string, never>,
   StudentMethods
 >;
