@@ -9,6 +9,8 @@ import {
   StaticStudentModel,
 } from './student.interface';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 // Create a Schema corres
 
@@ -63,6 +65,11 @@ export const studentSchema = new Schema<
   // InstanceStudentMethods
 >({
   id: { type: String },
+  password: {
+    type: String,
+    max: [20, 'password not over 20 characters'],
+    required: [true, 'Please! Enter your name.'], //extra message
+  },
   name: {
     type: studentNameSchema,
     required: [true, 'Please! Enter your name.'], //extra message
@@ -122,6 +129,26 @@ export const studentSchema = new Schema<
   },
 });
 
+// Mongoose middleware | hooks
+studentSchema.pre('save', async function (next) {
+  console.log(this, 'pre hook : work before save our data');
+
+  // hash password
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+
+  next();
+});
+
+// Mongoose middleware | hooks
+studentSchema.post('save', function () {
+  console.log(this, 'post hook : work after save our data');
+});
 
 // Schema for custom instance methods
 studentSchema.methods.isStudentExist = async function (id: string) {
