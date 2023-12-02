@@ -4,8 +4,9 @@ import {
   TLocalGuardian,
   TName,
   TStudent,
-  StudentMethods,
-  StudentModel,
+  // InstanceStudentMethods,
+  InstanceStudentModel,
+  StaticStudentModel,
 } from './student.interface';
 import validator from 'validator';
 
@@ -55,73 +56,87 @@ const studentLocalGuardianSchema = new Schema<TLocalGuardian>({
   contact: { type: String, required: true },
 });
 
-export const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
-  {
-    id: { type: String },
-    name: {
-      type: studentNameSchema,
-      required: [true, 'Please! Enter your name.'], //extra message
-    },
-    //   name: {
-    //     firstName: { type: String },
-    //     lastName: { type: String },
-    //   },
-    gender: {
-      type: String,
-      enum: {
-        values: ['Female', 'Male'],
-        message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
-      },
-      required: true,
-    }, //enum type
-    email: {
-      type: String,
-      validate: {
-        validator: (data: string) => validator.isEmail(data),
-        message: '{VALUE} is not email type ',
-      },
-      required: true,
-    },
-    address: { type: String, required: true },
-    contact: { type: String, required: true },
-    bloodGroup: {
-      type: String,
-      enum: ['A', 'AB', 'B', 'O'],
-    },
-    guardian: {
-      type: studentGuardianSchema,
-      required: true,
-    },
-    //   guardian: {
-    //     fatherName: { type: String },
-    //     fatherOccupation: { type: String },
-    //     fatherContact: { type: String },
-    //     motherName: { type: String },
-    //     motherContact: { type: String },
-    //     motherOccupation: { type: String },
-    //   },
-    localGuardian: {
-      type: studentLocalGuardianSchema,
-      required: true,
-    },
-    //   localGuardian: {
-    //     name: { type: String },
-    //     occupation: { type: String },
-    //     address: { type: String, required: true },
-    //     contact: { type: String, required: true },
-    //   },
-    isActive: {
-      type: String,
-      enum: ['active', 'inActive'],
-      default: 'active',
-    },
+export const studentSchema = new Schema<
+  TStudent,
+  InstanceStudentModel,
+  StaticStudentModel
+  // InstanceStudentMethods
+>({
+  id: { type: String },
+  name: {
+    type: studentNameSchema,
+    required: [true, 'Please! Enter your name.'], //extra message
   },
-);
+  //   name: {
+  //     firstName: { type: String },
+  //     lastName: { type: String },
+  //   },
+  gender: {
+    type: String,
+    enum: {
+      values: ['Female', 'Male'],
+      message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
+    },
+    required: true,
+  }, //enum type
+  email: {
+    type: String,
+    validate: {
+      validator: (data: string) => validator.isEmail(data),
+      message: '{VALUE} is not email type ',
+    },
+    required: true,
+  },
+  address: { type: String, required: true },
+  contact: { type: String, required: true },
+  bloodGroup: {
+    type: String,
+    enum: ['A', 'AB', 'B', 'O'],
+  },
+  guardian: {
+    type: studentGuardianSchema,
+    required: true,
+  },
+  //   guardian: {
+  //     fatherName: { type: String },
+  //     fatherOccupation: { type: String },
+  //     fatherContact: { type: String },
+  //     motherName: { type: String },
+  //     motherContact: { type: String },
+  //     motherOccupation: { type: String },
+  //   },
+  localGuardian: {
+    type: studentLocalGuardianSchema,
+    required: true,
+  },
+  //   localGuardian: {
+  //     name: { type: String },
+  //     occupation: { type: String },
+  //     address: { type: String, required: true },
+  //     contact: { type: String, required: true },
+  //   },
+  isActive: {
+    type: String,
+    enum: ['active', 'inActive'],
+    default: 'active',
+  },
+});
 
+
+// Schema for custom instance methods
 studentSchema.methods.isStudentExist = async function (id: string) {
-  const existingStudent = await Student.findOne({ id: id });
-  return existingStudent;
+  const existingStudentResult = await Student.findOne({ id: id });
+  return existingStudentResult;
 };
 
+// Schema for custom static methods
+studentSchema.static('isUserExist', async function existUserOrNot(id: string) {
+  const existingStudentResult = await Student.findOne({ id: id });
+  return existingStudentResult;
+});
+
 // create a model
-export const Student = model<TStudent, StudentModel>('Student', studentSchema); // creating model based on Student interface
+export const Student = model<
+  TStudent,
+  StaticStudentModel /* InstanceStudentModel */
+>('Student', studentSchema); // creating model based on Student interface || student =  Model
