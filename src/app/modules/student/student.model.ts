@@ -63,76 +63,81 @@ export const studentSchema = new Schema<
   InstanceStudentModel,
   StaticStudentModel
   // InstanceStudentMethods
->({
-  id: { type: String },
-  password: {
-    type: String,
-    max: [20, 'password not over 20 characters'],
-    required: [true, 'Please! Enter your name.'], //extra message
-  },
-  name: {
-    type: studentNameSchema,
-    required: [true, 'Please! Enter your name.'], //extra message
-  },
-  //   name: {
-  //     firstName: { type: String },
-  //     lastName: { type: String },
-  //   },
-  gender: {
-    type: String,
-    enum: {
-      values: ['Female', 'Male'],
-      message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
+>(
+  {
+    id: { type: String },
+    password: {
+      type: String,
+      max: [20, 'password not over 20 characters'],
+      required: [true, 'Please! Enter your name.'], //extra message
     },
-    required: true,
-  }, //enum type
-  email: {
-    type: String,
-    validate: {
-      validator: (data: string) => validator.isEmail(data),
-      message: '{VALUE} is not email type ',
+    name: {
+      type: studentNameSchema,
+      required: [true, 'Please! Enter your name.'], //extra message
     },
-    required: true,
-  },
-  address: { type: String, required: true },
-  contact: { type: String, required: true },
-  bloodGroup: {
-    type: String,
-    enum: ['A', 'AB', 'B', 'O'],
-  },
-  guardian: {
-    type: studentGuardianSchema,
-    required: true,
-  },
-  //   guardian: {
-  //     fatherName: { type: String },
-  //     fatherOccupation: { type: String },
-  //     fatherContact: { type: String },
-  //     motherName: { type: String },
-  //     motherContact: { type: String },
-  //     motherOccupation: { type: String },
-  //   },
-  localGuardian: {
-    type: studentLocalGuardianSchema,
-    required: true,
-  },
-  //   localGuardian: {
-  //     name: { type: String },
-  //     occupation: { type: String },
-  //     address: { type: String, required: true },
-  //     contact: { type: String, required: true },
-  //   },
-  isActive: {
-    type: String,
-    enum: ['active', 'inActive'],
-    default: 'active',
-  },
+    //   name: {
+    //     firstName: { type: String },
+    //     lastName: { type: String },
+    //   },
+    gender: {
+      type: String,
+      enum: {
+        values: ['Female', 'Male'],
+        message: 'Gender must be Male or Female.{VALUE} is not valid', //value is user input
+      },
+      required: true,
+    }, //enum type
+    email: {
+      type: String,
+      validate: {
+        validator: (data: string) => validator.isEmail(data),
+        message: '{VALUE} is not email type ',
+      },
+      required: true,
+    },
+    address: { type: String, required: true },
+    contact: { type: String, required: true },
+    bloodGroup: {
+      type: String,
+      enum: ['A', 'AB', 'B', 'O'],
+    },
+    guardian: {
+      type: studentGuardianSchema,
+      required: true,
+    },
+    //   guardian: {
+    //     fatherName: { type: String },
+    //     fatherOccupation: { type: String },
+    //     fatherContact: { type: String },
+    //     motherName: { type: String },
+    //     motherContact: { type: String },
+    //     motherOccupation: { type: String },
+    //   },
+    localGuardian: {
+      type: studentLocalGuardianSchema,
+      required: true,
+    },
+    //   localGuardian: {
+    //     name: { type: String },
+    //     occupation: { type: String },
+    //     address: { type: String, required: true },
+    //     contact: { type: String, required: true },
+    //   },
+    isActive: {
+      type: String,
+      enum: ['active', 'inActive'],
+      default: 'active',
+    },
 
-  isDeleted: {
-    type: Boolean,
-    default: false,
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-});
+  {
+    toJSON: { virtuals: true }, //call virtual when json data is coming
+  },
+);
 
 // Mongoose middleware pre | hooks
 studentSchema.pre('save', async function (next) {
@@ -185,6 +190,11 @@ studentSchema.methods.isStudentExist = async function (id: string) {
 studentSchema.static('isUserExist', async function existUserOrNot(id: string) {
   const existingStudentResult = await Student.findOne({ id: id });
   return existingStudentResult;
+});
+
+// Mongoose virtual
+studentSchema.virtual('full-name').get(function () {
+  return `${this.name.firstName} ${this.name.lastName}`;
 });
 
 // create a model
