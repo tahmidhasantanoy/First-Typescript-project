@@ -12,8 +12,7 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-// Create a Schema corres
-
+// Create a Schema 
 const studentNameSchema = new Schema<TName>({
   firstName: {
     type: String,
