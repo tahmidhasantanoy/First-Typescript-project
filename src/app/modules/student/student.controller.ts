@@ -2,49 +2,49 @@ import { Request, Response } from 'express';
 import { studentServices } from './student.sevice';
 // import studentValidationSchema from './student.validation';
 // import { z } from 'zod';
-import StudentValidationSchema from './student.validation';
+// import StudentValidationSchema from './student.validation';
 
 // Controller just work with req & res
-const createStudent = async (req: Request, res: Response) => {
-  try {
-    const student = req.body.student; //get data
+// const createStudent = async (req: Request, res: Response) => {
+//   try {
+//     const student = req.body.student; //get data
 
-    /* joi validation */
-    // const { error, value } = StudentValidationSchema.validate(student)
-    // console.log(error, value);
+//     /* joi validation */
+//     // const { error, value } = StudentValidationSchema.validate(student)
+//     // console.log(error, value);
 
-    // if (error) {
-    //   res.status(500).json({
-    //     success: false,
-    //     message: 'Error is occured',
-    //     error: error.details,
-    //   });
-    // }
+//     // if (error) {
+//     //   res.status(500).json({
+//     //     success: false,
+//     //     message: 'Error is occured',
+//     //     error: error.details,
+//     //   });
+//     // }
 
-    /* zod validation */
-    const zodParseData = StudentValidationSchema.parse(student);
+//     /* zod validation */
+//     const zodParseData = StudentValidationSchema.parse(student);
 
-    // will call to service
-    const serviceResult =
-      await studentServices.createStudentIntoDB(zodParseData); //send validate data
-    // console.log(serviceResult); //don't find
+//     // will call to service
+//     const serviceResult =
+//       await studentServices.createStudentIntoDB(zodParseData); //send validate data
+//     // console.log(serviceResult); //don't find
 
-    // sending response
-    res.json({
-      success: true,
-      message: 'Student create successfully',
-      data: serviceResult,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "Can't create student data",
-      data: err,
-    });
+//     // sending response
+//     res.json({
+//       success: true,
+//       message: 'Student create successfully',
+//       data: serviceResult,
+//     });
+//   } catch (err: any) {
+//     res.status(500).json({
+//       success: false,
+//       message: err.message || "Can't create student data",
+//       data: err,
+//     });
 
-    console.log(`catch err : ${err}`);
-  }
-};
+//     console.log(`catch err : ${err}`);
+//   }
+// };
 
 const getAllStudent = async (req: Request, res: Response) => {
   try {
@@ -105,7 +105,7 @@ const deleteStudent = async (req: Request, res: Response) => {
 };
 
 export const studentController = {
-  createStudent,
+  // createStudent,
   getAllStudent,
   getSingleStudent,
   deleteStudent,

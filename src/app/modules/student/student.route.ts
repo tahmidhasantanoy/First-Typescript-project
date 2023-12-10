@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(express.json());
 
 // route will call controller function
-router.post('/create-student', studentController.createStudent);
+// router.post('/create-student', studentController.createStudent);
 
 router.get('/', studentController.getAllStudent);
 

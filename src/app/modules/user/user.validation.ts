@@ -9,7 +9,7 @@ export const userValidationSchema = z.object({
     })
     .optional(),
   //   needPasswordChange: z.boolean().default(true).optional(), //we set this from model
-  //   role: z.enum(['student', 'faculty', 'admin']), //role is define by their url
+  //   role: z.enum(['student', 'faculty', 'admin']), //role is define by their url(user url)
   //   status: z.enum(['In-progress', 'Blocked']),//so admin don't need to say exlicitly this
   //   isDeleted: z.boolean().default(false).optional(), // admin says default is false
 });
