@@ -43,19 +43,7 @@ const createStudent = async (req: Request, res: Response) => {
     }
   };
 
-    res.status(200).json({
-      success: true,
-      message: 'Student create Successfully',
-      data: createStudentResult,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-      data: err,
-    });
-  }
-};
+
 
 export const userController = {
   createStudent,
